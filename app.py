@@ -12,7 +12,13 @@ def predict():
     '''
     For rendering results on HTML GUI
     '''
-    
+    int_features = [str(x) for x in request.form.values()]
+    final_features = [np.array(int_features)]
+    parva_number = final_features[0]
+    parva_part = final_features[1]
+    page_number = final_features[2]
+    #pip install urllib3
+    #pip install bs4
     from heapq import nlargest
     from typing import DefaultDict
     import urllib
@@ -22,9 +28,9 @@ def predict():
     from string import punctuation
     import nltk
     from nltk.probability import FreqDist
-#nltk.download('punkt')
+    #nltk.download('punkt')
 
-    parva_part=''
+    #parva_part=''
     #parva_number=str(input(print("Select a Parva from 01 to 18")))
     if parva_number=='01':
         page_number=str(input(print(f"You have selected the Ādi Parva. Now select a number from 000 to 237:")))
@@ -49,19 +55,19 @@ def predict():
     elif parva_number=='11':
         page_number=str(input(print(f"That would be the Strī Parva. Now select a number from 000 to 026:")))
     elif parva_number=='12':
-        parva_part = str(input(print("That would be the Śanti Parva. Type a for Part A, b for Part B or c for Part C:")))
-        if parva_part == 'a':
-            page_number=print("Select a number from 000 to 172")
-        elif parva_part== 'b':
-            page_number=print("Select a number from 000 to 128")
-        else:
-            page_number=print("Select a number from 000 to 063")
+      parva_part=str(input(print("That would be the Śanti Parva. Type a for Part A, b for Part B or c for Part C:")))
+      if parva_part == 'a':
+        page_number=print("Select a number from 000 to 172")
+      elif parva_part== 'b':
+        page_number=print("Select a number from 000 to 128")
+      else:
+        page_number=print("Select a number from 000 to 063")
     elif parva_number=='13':
         parva_part=str(input(print(f"That would be the Anuśāsana Parva. Now Type a for Part A or b for Part B:")))
         if parva_part=='a':
-            print('Select a number from 000 to 035')
+          print('Select a number from 000 to 035')
         else:
-            print('Select a number from 000 to 133')
+          print('Select a number from 000 to 133')
     elif parva_number=='14':
         page_number=str(input(print(f"That would be the Aśvamedha Parva. Now select a number from 000 to 092:")))
     elif parva_number=='15':
@@ -96,27 +102,30 @@ def predict():
 
     def summarize(text, n):
         sents = sent_tokenize(text)
-        
+
         assert n <= len(sents)
         word_sent = word_tokenize(text.lower())
         _stopwords = set(stopwords.words('english') + list(punctuation))
-        
+
         word_sent=[word for word in word_sent if word not in _stopwords]
         freq = FreqDist(word_sent)
-        
-        
+
+
         ranking = DefaultDict(int)
-        
+
         for i,sent in enumerate(sents):
             for w in word_tokenize(sent.lower()):
                 if w in freq:
                     ranking[i] += freq[w]
-                
-            
+
+
         sents_idx = nlargest(n, ranking, key=ranking.get)
-        output = str([sents[j] for j in sorted(sents_idx)])
+        output = [sents[j] for j in sorted(sents_idx)]
         return output
-    
+    #print(summarize(text,3))
+
+#        output = suma.sumarize(prediction[0], 3)
+
     return render_template('index.html', prediction_text='Summary is {}'.format(output))
 
 

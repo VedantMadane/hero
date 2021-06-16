@@ -115,7 +115,7 @@ def predict():
             
         sents_idx = nlargest(n, ranking, key=ranking.get)
         output = [sents[j] for j in sorted(sents_idx)]
-        return output
+        return print(output)
     
     return render_template('index.html', prediction_text='Summary is {}'.format(output))
 

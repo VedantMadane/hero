@@ -7,7 +7,7 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-@app.route('/predict',methods=['POST'])
+@app.route('/predict', methods=['POST'])
 def predict():
     '''
     For rendering results on HTML GUI
@@ -25,7 +25,7 @@ def predict():
 #nltk.download('punkt')
 
     parva_part=''
-    parva_number=str(input(print("Select a Parva from 01 to 18")))
+    #parva_number=str(input(print("Select a Parva from 01 to 18")))
     if parva_number=='01':
         page_number=str(input(print(f"You have selected the Ādi Parva. Now select a number from 000 to 237:")))
     elif parva_number=='02':
@@ -114,8 +114,8 @@ def predict():
                 
             
         sents_idx = nlargest(n, ranking, key=ranking.get)
-        output = [sents[j] for j in sorted(sents_idx)]
-        return print(output)
+        output = str([sents[j] for j in sorted(sents_idx)])
+        return output
     
     return render_template('index.html', prediction_text='Summary is {}'.format(output))
 
